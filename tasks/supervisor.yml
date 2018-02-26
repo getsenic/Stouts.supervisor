@@ -5,7 +5,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: Install supervisor
-  pip: name=supervisor version={{ supervisor_version }}
+  apt: name=supervisor state=latest
   notify:
     - supervisor restart
     
@@ -36,6 +36,10 @@
 - name: Enable supervisor service (Debian) - pt. 3
   service: name=supervisor enabled=yes
   when: ansible_distribution == 'Debian'
+
+- name: Ensure the supervisor is enabled
+  service: name=supervisor enabled=yes
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Ensure the supervisor is started
   service: name=supervisor state=started
